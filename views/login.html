@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/wda-dev-1.0.js"></script>
+</head>
+<body>
+
+<img src="http://wda521.free.idcfengye.com/basis/getVerifiCode"/>
+
+<script type="text/javascript">
+    (function () {
+        var url = "http://wda521.free.idcfengye.com/basis/test";
+        var p = {
+            name: 'wxq',
+            age: 12
+        };
+        var param = {
+            inJson: encodeURIComponent(encodeURIComponent(JSON.stringify(p)))
+        };
+        Wda.Ajax.doPost(url, param, function (data) {
+            console.log(data)
+        }, function (error) {
+            console.log(error)
+        });
+    })()
+</script>
+</body>
+</html>
