@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>Title</title>
+    <style>
+        .wda-content-flex {
+            display: flex;
+            flex-direction: row;
+            text-align: center;
+        }
+
+        .wda-content-flex div {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+<div id="type-1" class="wda-content-flex"></div>
+
+<div id="type-2" class="wda-content-flex"></div>
+<script type="text/javascript">
+    (function () {
+        var arr1 = ["标题1", "标题2"];
+        var arr2 = ["京东", '苏宁', "其他商城"];
+
+        var type1 = document.getElementById("type-1");
+        var str = '';
+        for (var item1 in arr1) {
+            str += '<div>' + arr1[item1] + '</div>'
+        }
+        type1.innerHTML = str;
+
+
+        var type2 = document.getElementById("type-2");
+        var str2 = '';
+        for (var item2 in arr2) {
+            str2 += '<div>' + arr2[item2] + '</div>'
+        }
+        type2.innerHTML = str2;
+    })()
+</script>
+</body>
+</html>
