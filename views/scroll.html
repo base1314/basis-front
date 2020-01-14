@@ -45,7 +45,7 @@
     document.querySelector(".wda-scroll-content").addEventListener("scroll", function () {
         d1 = getScrollState(this);
         clearTimeout(timer);
-        timer = setTimeout(isScrollEnd, 200);
+        timer = setTimeout(isScrollEnd, 500);
     });
 
     function isScrollEnd() {
