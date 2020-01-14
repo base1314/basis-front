@@ -45,5 +45,22 @@ Wda = {
             };
             xhr.send(null);
         }
+    },
+    msg: {
+        showLoading: function () {
+
+        },
+        hideLoading: function () {
+
+        },
+        toast: function () {
+
+        },
+        alert: function () {
+
+        },
+        confirm: function () {
+
+        }
     }
 };
