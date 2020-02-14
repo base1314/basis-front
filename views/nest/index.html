@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <title>目录</title>
+    <script src="../../js/jquery/jquery-2.2.0.min.js"></script>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .wda-content-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 18px;
+        color: #FFF;
+    }
+
+    canvas {
+        display: block;
+        background: #000;
+    }
+</style>
+<body>
+<canvas id="canvas">您的浏览器不支持canvas标签</canvas>
+<div class="wda-content-center">
+    <div style="margin-bottom:10px">致❤</div>
+    <canvas id="mainCanvas" height="200px" width="300px" style="background: none"></canvas>
+</div>
+</body>
+<script>
+    //获取画布节点
+    var can = document.getElementById("canvas");
+    var mainCan = document.getElementById("mainCanvas");
+    var cxt = can.getContext("2d");
+    var mainCxt = mainCan.getContext("2d");
+
+    mainCxt.fillStyle = "yellow";
+    mainCxt.fillText("小蝶", 0, 10);
+    mainCxt.fillText("希望你好好的", 0, 30);
+
+    //获取屏幕高度和宽度
+    var w = can.width = window.innerWidth;
+    var h = can.height = window.innerHeight;
+
+    //绘制30个雨滴
+    var count = 20;
+    //存放雨滴
+    var dropArray = [];
+
+    //监听浏览器窗口变化
+    window.onresize = function () {
+        w = can.width = window.innerWidth;
+        h = can.height = window.innerHeight;
+    };
+
+    // cxt.fillRect(x,y,w,h)
+    // x,y 代表实心矩形的左上角点 w,h代表实心矩形的宽、高
+    // cxt.fillStyle = "red";
+    // fillRect方法 其实是 rect() 和 fill() 结合而成
+    // cxt.fillRect(0, 0, 50, 50);
+
+    // 绘制圆形
+    // cxt.arc(x,y,r,0,360);
+    // x,y 圆心坐标 r 半径 0 360 从0度到360度 即整圆  方向 false 逆时针 true 顺时针
+    // cxt.arc(200, 200, 30, 0, Math.PI * 2, false);
+    // cxt.fill(); //填充方法
+
+    // cxt.strokeStyle = "#FFF";
+    // cxt.stroke(); //触笔方法
+
+    // 定时器
+    // var y = 0;
+    // setInterval(function () {
+    //     cxt.clearRect(300, 0, w, h);
+    //     y++;
+    //     cxt.fillStyle = "red";
+    //     cxt.fillRect(300, y, 50, 50);
+    // }, 100);
+
+    // 构造雨滴对象
+    function Drop() {
+    }
+
+    // 给雨滴增加原型
+    Drop.prototype = {
+        // 初始化方法
+        init: function () {
+            this.x = random(0, w);
+            this.y = 0;
+            // y方向的速度
+            this.vy = random(2, 3);
+            // y方向下落的最大高度
+            this.failHeight = random(h * 0.8, h * 0.9);
+            // 圆形的初始半径
+            this.r = 1;
+            // 初始半径的增加速度
+            this.vr = 1;
+            // 初始透明度
+            this.a = 1;
+            // 透明度变化系数
+            this.va = 0.8;
+        },
+        // 绘制雨滴
+        draw: function () {
+            if (this.y < this.failHeight) {
+                cxt.fillStyle = "#0FF";
+                cxt.fillRect(this.x, this.y, 1, 5);
+            } else {
+                cxt.beginPath();
+                cxt.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
+                cxt.strokeStyle = "rgba(0,255,255," + this.a + ")";
+                cxt.stroke();
+            }
+            this.update();
+        },
+        // 更新坐标y值
+        update: function () {
+            // y轴方向达到最大下降高度时不再累加
+            if (this.y < this.failHeight) {
+                // y轴增大
+                this.y += this.vy;
+            } else {
+                if (this.a > 0.03) {
+                    // 圆形半径增大
+                    this.r += this.vr;
+                    if (this.r > 20) {
+                        this.a *= this.va;
+                    }
+                } else {
+                    this.init();
+                }
+            }
+        }
+    };
+
+    // 实例化一个雨滴
+    // var drop = new Drop();
+    // drop.init();
+    // drop.draw();
+
+    // setInterval(function () {
+    //     drop.draw();
+    // }, 100);
+
+    // 实例化30个雨滴
+    for (var i = 0; i < count; i++) {
+        // 延迟200毫秒
+        setTimeout(function () {
+            var drop = new Drop();
+            drop.init();
+            dropArray.push(drop);
+        }, i * 200);
+    }
+
+    console.log(dropArray);
+
+
+    function move() {
+        // 绘制透明层
+        cxt.fillStyle = "rgba(0,0,0,0.1)";
+        cxt.fillRect(0, 0, w, h);
+
+        // 绘制30个雨滴
+        for (var j = 0; j < dropArray.length; j++) {
+            dropArray[j].draw();
+        }
+        requestAnimationFrame(move)
+    }
+
+    move();
+
+    // 生成随机数
+    // min-max之间的随机数
+    function random(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+</script>
+</html>
